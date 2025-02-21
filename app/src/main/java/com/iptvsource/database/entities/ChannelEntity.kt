@@ -9,5 +9,6 @@ data class ChannelEntity(
     val name: String,       // שם הערוץ
     val logo: String,       // כתובת URL של לוגו הערוץ
     val category: String,   // קטגוריה של הערוץ
-    val streamUrl: String   // כתובת URL להזרמת המדיה
+    val streamUrl: String,  // כתובת URL להזרמת המדיה
+    val isHidden: Boolean = false // ✅ שדה חדש שמאפשר הסתרת ערוצים
 )

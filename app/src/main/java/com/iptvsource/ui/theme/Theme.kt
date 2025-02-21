@@ -1,13 +1,21 @@
 package com.iptvsource.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.tv.material3.ExperimentalTvMaterial3Api
-import androidx.tv.material3.MaterialTheme
-import androidx.tv.material3.darkColorScheme
-import androidx.tv.material3.lightColorScheme
+import androidx.compose.ui.graphics.Color
 
-@OptIn(ExperimentalTvMaterial3Api::class)
+// ✅ הגדרת צבעים ללא כפילויות
+val Purple40 = Color(0xFF6200EE)
+val Purple80 = Color(0xFF3700B3)
+val PurpleGrey40 = Color(0xFFBB86FC)
+val PurpleGrey80 = Color(0xFF6200EA)
+val Pink40 = Color(0xFFFF4081)
+val Pink80 = Color(0xFFFF80AB)
+val Teal200 = Color(0xFF03DAC5)
+
 @Composable
 fun IPTVSourceTheme(
     isInDarkTheme: Boolean = isSystemInDarkTheme(),
@@ -26,9 +34,9 @@ fun IPTVSourceTheme(
             tertiary = Pink40
         )
     }
+
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
         content = content
     )
 }

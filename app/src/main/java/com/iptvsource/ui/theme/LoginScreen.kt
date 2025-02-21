@@ -1,7 +1,6 @@
 package com.iptvsource.ui.theme.screens
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -10,9 +9,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.iptvsource.database.repository.ChannelRepository
+import com.iptvsource.parser.M3UParser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import androidx.navigation.NavHostController
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavHostController, channelRepository: ChannelRepository) { // ✅ הוספנו את הפרמטר
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("IPTVPrefs", Context.MODE_PRIVATE)
 
@@ -28,21 +33,21 @@ fun LoginScreen(navController: NavController) {
         OutlinedTextField(
             value = url,
             onValueChange = { url = it },
-            label = { Text("URL") },
+            label = { Text("M3U / Xtream URL") },
             modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text("Username") },
+            label = { Text("Username (Xtream Only)") },
             modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text("Password (Xtream Only)") },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -54,11 +59,18 @@ fun LoginScreen(navController: NavController) {
                     putString("password", password)
                     apply()
                 }
+
+                // טוען את ה-M3U ושומר במסד הנתונים
+                CoroutineScope(Dispatchers.IO).launch {
+                    val channels = M3UParser.parseM3UFromUrl(url)
+                    channelRepository.insertChannels(channels) // ✅ עכשיו זה יעבוד כי הוא קיים בפרמטרים
+                }
+
                 navController.navigate("channels")
             },
             modifier = Modifier.padding(top = 16.dp)
         ) {
-            Text("Login")
+            Text("Login & Load Channels")
         }
     }
 }
